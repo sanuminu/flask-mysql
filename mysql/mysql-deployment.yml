@@ -1,11 +1,12 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: mysql
   labels:
     app: db
 spec:
+  terminationGracePeriodSeconds: 15
   replicas: 3
   selector:
     matchLabels:
