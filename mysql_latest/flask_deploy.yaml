@@ -1,0 +1,61 @@
+piVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaskapi-deployment
+  labels:
+    app: flaskapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: flaskapi
+  template:
+    metadata:
+      labels:
+        app: flaskapi
+    spec:
+      containers:
+        - name: flaskapi
+          image: flask-api
+          imagePullPolicy: Never
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            tcpSocket:
+              port: 5000
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            tcpSocket:
+              port: 5000
+          resources:
+            requests:
+              cpu: 20m
+            limits:
+              cpu: 25m
+          ports:
+            - containerPort: 5000
+              name: webport
+              protocol: TCP
+          env:
+            - name: db_root_password
+              valueFrom:
+                secretKeyRef:
+                  name: flaskapi-secrets
+                  key: db_root_password
+            - name: db_name
+              value: flaskapi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-service
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: flaskapi
+  type: ClusterIP
