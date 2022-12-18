@@ -1,4 +1,4 @@
-piVersion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: flaskapi-deployment
@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: flaskapi
-          image: flask-api
-          imagePullPolicy: Never
+          image: sanish/demologin:1.0.4
+          imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
             initialDelaySeconds: 15
