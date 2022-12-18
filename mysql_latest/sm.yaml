@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: flaskapi-sm
+  namespace: default
+  labels:
+    release:  stable    
+spec:
+  endpoints:
+  - interval: 30s
+    port: webport
+  selector:
+    matchLabels:
+      app: flaskapi
