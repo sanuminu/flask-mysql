@@ -57,6 +57,7 @@ metadata:
 spec:
   ports:
   - port: 5000
+    name: webport
     protocol: TCP
     targetPort: 5000
   selector:
